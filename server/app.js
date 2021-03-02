@@ -2,9 +2,13 @@ const express = require('express');
 const path = require('path');
 const { json } = require('express');
 
-const { httpLogger } = require('./config/logger');
 const connectToDatabase = require('./config/db');
+const errorLogger = require('./middlewares/error/errorLogger');
+const { httpLogger } = require('./config/logger');
 const { NotFoundError } = require('./helpers/error');
+const clientErrorHandler = require('./middlewares/error/clientErrorHandler');
+const catchAllErrorHandler = require('./utils/catchAllErrorHandler');
+
 
 const app = express();
 
@@ -27,4 +31,13 @@ app.all('*', (req, res, next) => {
         );
   });
 
+//setting error logging handler.
+app.use(errorLogger);
+
+//setting client(response) error handler
+app.use(clientErrorHandler);
+
+//setting an error handler for unhandled errors
+//by the clientErrorHandler
+app.use(catchAllErrorHandler);
 module.exports = app;

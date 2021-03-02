@@ -1,4 +1,4 @@
-const errorConstants = require('../utils/constants/errorConstants');
+const errorConstants = require('../utils/constants/responseConstants');
 /**
  * a Parent class for Error detection
  */
