@@ -49,11 +49,13 @@ const loggerConfiguration = {
         }),
         new transports.File({
             filename: `${basePath}/error.json`,
+            maxsize: 5242880,   //5MB maximum file size
             level: 'error'
         }),
         new transports.File({
             filename: `${basePath}/combined-${new Date()}.json`,
             maxsize: 5242880,   //5MB maximum file size
+            level: 'info'
         }),
     ],
     exceptionHandlers: [
@@ -73,10 +75,12 @@ const loggerConfiguration = {
     exitOnError: false
 };
 
+const logger = createLogger(loggerConfiguration);
+
 //a stream to make morgan logs pass through winston.
 const httpLoggerStream = {
     write: function(message) {
-        logger.warn(JSON.stringify(message).replace(/"/g,""));
+        logger.info(JSON.stringify(message).replace(/"/g,""));
     }
 };
 
@@ -85,7 +89,7 @@ const httpLoggerFromat = `{ method: :method, url: :url, remoteIp: :remote-addr,
     remoteUser: :remote-user, httpVersion: :http-version, status: :status,
     contentLength: :res[content-length], responseTime: :response-time ms,
     referrer: :referrer, userAgent: :user-agent}`.replace(/\n/g, "");
-const logger = createLogger(loggerConfiguration);
+
 
 //configure HTTP request and response only logger
 const httpLogger = morgan(httpLoggerFromat, {stream: httpLoggerStream});

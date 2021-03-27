@@ -1,4 +1,4 @@
-const logger = require('../../config/logger');;
+const { logger } = require('../../config/logger');
 
 /**
  * a function to log a message when an error is encountered.

@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
+const config = require('./config');
 
 const { logger } = require('./logger');
 
-const dbURI = `mongodb://localhost:27017` || process.env.DB_URI;
+const dbURI = `mongodb://${config.db.host}:${config.db.port}/${config.db.name}`;
 
 const connectToDatabase = () => {
     mongoose.connect(dbURI, { useUnifiedTopology: true, useNewUrlParser: true });

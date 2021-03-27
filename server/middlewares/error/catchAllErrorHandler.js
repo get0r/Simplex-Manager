@@ -1,4 +1,4 @@
-const responseConstants = require("./constants/responseConstants");
+const responseConstants = require("../../utils/constants/responseConstants");
 
 /**
  *

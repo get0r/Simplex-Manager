@@ -1,4 +1,4 @@
-const { ApplicationError, NotFoundError } = require("../../helpers/error");
+const { ApplicationError, NotFoundError, ValidationError } = require("../../helpers/error");
 const { sendError } = require("../../utils/responseBuilder");
 
 /**
