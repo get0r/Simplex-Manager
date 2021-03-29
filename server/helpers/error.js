@@ -33,8 +33,15 @@ class NotFoundError extends ApplicationError {
         super(httpCode, fileName, message);
     }
 }
+
+class AuthorizationError extends ApplicationError {
+    constructor(fileName, message, httpCode=errorConstants.UNAUTHORIZED_CODE) {
+        super(httpCode, fileName, message);
+    }
+}
 module.exports = {
     ApplicationError,
     ValidationError,
-    NotFoundError
+    NotFoundError,
+    AuthorizationError
 };

@@ -1,5 +1,7 @@
 const express = require('express');
 const { loginAdmin, registerAdmin } = require('../controllers/admin.controller');
+const { createProject } = require('../controllers/project.controller');
+const { authUser } = require('../middlewares/auth/user.auth');
 const { validateLoginData, validateRegisterData } = require('../middlewares/validator/user.validator');
 
 
@@ -18,5 +20,12 @@ adminRouter.post('/admin/login', validateLoginData, loginAdmin);
  * @registerAdmin- register servive route end point.
  */
 adminRouter.post('/admin/register', validateRegisterData, registerAdmin);
+
+/**
+ * @route a route to create new project.
+ * @authUser- a route to authorize user(verify token).
+ * @createProject- project creator endpoint.
+ */
+adminRouter.get('/projects/new', authUser, createProject);
 
 module.exports = adminRouter;
