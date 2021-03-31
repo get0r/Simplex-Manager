@@ -16,7 +16,7 @@ const validateLoginData = async (req, res, next) => {
         const userLoginDetail = req.body;
         const result = await loginSchema.validateAsync(userLoginDetail, schemaOptions);
         //go on to the next function since it's successful on the validation
-        next();
+        return next();
 
     } catch(e) {
         //filtering out the message part from the details.
@@ -24,7 +24,7 @@ const validateLoginData = async (req, res, next) => {
         //throw the error for logging
 
         const validationError = new ValidationError(path.basename(__filename), errorMessage);
-        next(validationError);
+        return next(validationError);
     }
 };
 

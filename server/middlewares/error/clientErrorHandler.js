@@ -1,4 +1,4 @@
-const { ApplicationError, NotFoundError, ValidationError } = require("../../helpers/error");
+const { ApplicationError, NotFoundError, ValidationError, AuthorizationError } = require("../../helpers/error");
 const { sendError } = require("../../utils/responseBuilder");
 
 /**
@@ -12,11 +12,14 @@ const { sendError } = require("../../utils/responseBuilder");
 const clientErrorHandler = (err, req, res, next) => {
     //check for the type of the error and
     //prepare response based on that.
+
     if(err instanceof ValidationError) {
         return sendError(res, err.httpCode, `Invalid Input was given.`);
     } else if(err instanceof NotFoundError) {
         return sendError(res, err.httpCode, `Not Found.`);
-    } else if(err instanceof ApplicationError) {
+    } else if(err instanceof AuthorizationError) {
+        return sendError(res, err.httpCode, 'Unauthorized. Please Login first.');
+    }  else if(err instanceof ApplicationError) {
         return sendError(res, err.httpCode, `Sorry, something went wrong. try again!`);
     } else {
         //unknown error has happend so try to handle it using the

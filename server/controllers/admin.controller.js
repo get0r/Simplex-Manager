@@ -36,6 +36,8 @@ const registerAdmin = async (req, res) => {
             let tokenPayload = { id: newAdmin._id, userType: 0 };
             const token = jwt.sign(tokenPayload, config.app.tokenSecret, { expiresIn: '48h' });
 
+            //log registeration success data
+            logger.info(`admin registration successful ---${JSON.stringify(newAdmin)}`);
             //store the token in to the cookie
             res.cookie('token', token, { httpOnly: true, secure: true, sameSite: true});
             return sendSuccess(res, 'Registration Successful');

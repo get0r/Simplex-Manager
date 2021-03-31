@@ -6,7 +6,7 @@ const { combine, timestamp, label, colorize, printf } = format;
 const logFormat = printf(({level, message, label, timestamp}) => {
     //if the log message passed to the logger
     //contains `HTTP` then it's a morgan req-res log
-    if(message.search('HTTP') != -1)
+    if(message.search('userAgent') != -1)
         label = 'morgan';
     else
         label = 'winston';
