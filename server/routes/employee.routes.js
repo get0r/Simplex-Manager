@@ -1,18 +1,18 @@
 const express = require('express');
-const { loginAdmin, registerAdmin } = require('../controllers/admin.controller');
-const { createProject } = require('../controllers/project.controller');
-const { authUser, isAdmin } = require('../middlewares/auth/user.auth');
+
+const { registerAdmin } = require('../controllers/admin.controller');
+const { loginEmployee } = require('../controllers/employee.controller');
 const { validateLoginData, validateRegisterData } = require('../middlewares/validator/employee.validator');
 
 
 const adminRouter = express.Router();
 
 /**
- * @route a route for the login feature dedicated to the admin,
+ * @route a route for the login feature of Employees including admin,
  * @validateLoginData- login data(username, password) validation middleware.
  * @loginAdmin- login service route destination method.
  */
-adminRouter.post('/admin/login', validateLoginData, loginAdmin);
+adminRouter.post('/login', validateLoginData, loginEmployee);
 
 /**
  * @route a route to register admin only.
@@ -20,12 +20,5 @@ adminRouter.post('/admin/login', validateLoginData, loginAdmin);
  * @registerAdmin- register servive route end point.
  */
 adminRouter.post('/admin/register', validateRegisterData, registerAdmin);
-
-/**
- * @route a route to create new project.
- * @authUser- a route to authorize user(verify token).
- * @createProject- project creator endpoint.
- */
-adminRouter.get('/projects/new', authUser, isAdmin, createProject);
 
 module.exports = adminRouter;

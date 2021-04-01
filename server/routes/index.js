@@ -1,11 +1,15 @@
 const express = require('express');
 
-const adminRouter = require('./admin.routes');
+const employeeRouter = require('./employee.routes');
+const projectRouter = require('./project.routes');
 
 
 const router = express.Router();
 
 //connecting user relates routes for logging and the like
-router.use(adminRouter);
+router.use(employeeRouter);
+
+//project CRUD routes
+router.use(projectRouter);
 
 module.exports = router;

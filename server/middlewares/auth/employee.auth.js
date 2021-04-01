@@ -29,7 +29,7 @@ const authUser = (req, res, next) => {
         req.userType = verifiedUser.userType;       //admin or employee 0 or 1 respectively.
 
         //log auth success indicator
-        logger.info(`Auth successful for ---${JSON.stringify({userId: verifiedUser.id, userType: verifiedUser.userType})}`);
+        logger.info(`Auth successful for ---${JSON.stringify({userId: verifiedUser.id, userType: verifiedUser.userType ? 'employee' : 'admin'})}`);
 
         //continue to the route end point
         return next();
