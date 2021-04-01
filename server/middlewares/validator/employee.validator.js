@@ -2,7 +2,7 @@ const path = require('path');
 
 
 const { ValidationError } = require("../../helpers/error");
-const { loginSchema, schemaOptions, adminSchema } = require('../../utils/validationSchema/user.schema');
+const { loginSchema, schemaOptions, employeeSchema } = require('../../utils/validationSchema/employee.schema');
 
 /**
  * a method to validate the data sent for login purpose that is username, password
@@ -14,7 +14,7 @@ const { loginSchema, schemaOptions, adminSchema } = require('../../utils/validat
 const validateLoginData = async (req, res, next) => {
     try {
         const userLoginDetail = req.body;
-        const result = await loginSchema.validateAsync(userLoginDetail, schemaOptions);
+        await loginSchema.validateAsync(userLoginDetail, schemaOptions);
         //go on to the next function since it's successful on the validation
         return next();
 
@@ -39,7 +39,7 @@ const validateLoginData = async (req, res, next) => {
  const validateRegisterData = async (req, res, next) => {
     try {
         const userRegisterData = req.body;
-        const result = await adminSchema.validateAsync(userRegisterData, schemaOptions);
+        await employeeSchema.validateAsync(userRegisterData, schemaOptions);
         //go on to the next function since it's successful on the validation
         next();
 

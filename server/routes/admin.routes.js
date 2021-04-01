@@ -2,7 +2,7 @@ const express = require('express');
 const { loginAdmin, registerAdmin } = require('../controllers/admin.controller');
 const { createProject } = require('../controllers/project.controller');
 const { authUser, isAdmin } = require('../middlewares/auth/user.auth');
-const { validateLoginData, validateRegisterData } = require('../middlewares/validator/user.validator');
+const { validateLoginData, validateRegisterData } = require('../middlewares/validator/employee.validator');
 
 
 const adminRouter = express.Router();

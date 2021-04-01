@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 const { logger } = require('../config/logger');
 
-const Admin = require("../models/admin.model");
+const Employee = require("../models/employee.model");
 const responseConstants = require("../utils/constants/responseConstants");
 const { hashString } = require('../utils/hashGenerator');
 const { sendError, sendSuccess } = require("../utils/responseBuilder");
@@ -19,17 +19,23 @@ const registerAdmin = async (req, res) => {
 
     try {
         //check if the username exists
-        const adminUser = await Admin.findOne({'username': userDetail.username});
+        const adminUser = await Employee.findOne({'username': userDetail.username});
 
         if(!adminUser) {
             const newPassword = await hashString(userDetail.password);
 
             //assembling data to save to database.
-            const newAdmin = new Admin({
+            const newAdmin = new Employee({
                 fname: userDetail.fname,
                 lname: userDetail.lname,
+                gender: userDetail.gender,
+                jobTitle: userDetail.jobTitle,
+                phone: userDetail.phone,
+                salary: userDetail.salary,
+                email: userDetail.email,
                 username: userDetail.username,
-                password: newPassword
+                password: newPassword,
+                isAdmin: true
             });
             await newAdmin.save();  //writing to the databse
             //generate JWT token since registration is successful
@@ -62,7 +68,7 @@ const loginAdmin = async (req, res) => {
 
     try {
         //check if the username exists
-        const adminUser = await Admin.findOne({'username': userDetail.username});
+        const adminUser = await Employee.findOne({'username': userDetail.username, 'isAdmin': true});
 
         if(adminUser) {
             //check for password correctness

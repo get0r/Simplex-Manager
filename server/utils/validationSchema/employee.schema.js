@@ -14,15 +14,20 @@ const loginSchema = Joi.object({
     password: Joi.string().min(8).max(22).required(),
 });
 
-const adminSchema = Joi.object({
+const employeeSchema = Joi.object({
     fname: nameSchema,
     lname: nameSchema,
+    gender: Joi.string().max(1).regex(/^(M|F)$/),
+    jobTitle: nameSchema,
+    phone: Joi.string().max(10),
+    salary: Joi.number(),
+    email: Joi.string().email(),
     username: nameSchema.min(3).max(10),
     password: Joi.string().min(8).max(22).required(),
 });
 
 module.exports = {
     loginSchema,
-    adminSchema,
+    employeeSchema,
     schemaOptions
 };
