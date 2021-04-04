@@ -1,24 +1,33 @@
 const express = require('express');
 
-const { registerAdmin } = require('../controllers/admin.controller');
-const { loginEmployee } = require('../controllers/employee.controller');
+const { loginEmployee, registerEmployee } = require('../controllers/employee.controller');
+const { authUser, isAdmin } = require('../middlewares/auth/employee.auth');
 const { validateLoginData, validateRegisterData } = require('../middlewares/validator/employee.validator');
 
 
-const adminRouter = express.Router();
+const employeeRouter = express.Router();
 
 /**
  * @route a route for the login feature of Employees including admin,
  * @validateLoginData- login data(username, password) validation middleware.
  * @loginAdmin- login service route destination method.
  */
-adminRouter.post('/login', validateLoginData, loginEmployee);
+employeeRouter.post('/login', validateLoginData, loginEmployee);
 
 /**
  * @route a route to register admin only.
  * @validateRegisterData- regsitering data(name, email ...) validator middleware.
  * @registerAdmin- register servive route end point.
  */
-adminRouter.post('/admin/register', validateRegisterData, registerAdmin);
+employeeRouter.post('/admin/register', validateRegisterData, registerEmployee);
 
-module.exports = adminRouter;
+/**
+ * @route a route to register Employee only and is requested by admin only (employees can't register themselves).
+ * @authUser user authentiating middleware (verfying token).
+ * @isAdmin is the authenticated user an admin (checker).
+ * @validateRegisterData regsitering data(name, email ...) validator middleware.
+ * @registerEmployee register servive route end point.
+ */
+employeeRouter.post('/employee/register', authUser, isAdmin, validateRegisterData, registerEmployee);
+
+module.exports = employeeRouter;

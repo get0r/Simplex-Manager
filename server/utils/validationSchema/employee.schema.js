@@ -7,11 +7,13 @@ const schemaOptions = {
 
 //nameSchema only alphabets are permitted.
 const nameSchema = Joi.string().regex(/^[A-za-z\s]+$/).required();
+const usernameSchema = Joi.string().min(3).max(10).regex(/[A-za-z1-9\s]+/).required();
+const passwordSchema = Joi.string().min(8).max(22).required();
 
 //schema for login only
 const loginSchema = Joi.object({
-    username: Joi.string().min(3).max(10).regex(/^[A-za-z\s]+$/).required(),
-    password: Joi.string().min(8).max(22).required(),
+    username: usernameSchema,
+    password: passwordSchema,
 });
 
 const employeeSchema = Joi.object({
@@ -22,8 +24,8 @@ const employeeSchema = Joi.object({
     phone: Joi.string().max(10),
     salary: Joi.number(),
     email: Joi.string().email(),
-    username: nameSchema.min(3).max(10),
-    password: Joi.string().min(8).max(22).required(),
+    username: usernameSchema,
+    password: passwordSchema,
 });
 
 module.exports = {
