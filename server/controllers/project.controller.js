@@ -1,11 +1,11 @@
 /**
- * a method to register an admin user.
+ * a method to create new Project.
  * @param {Object} req request object
  * @param {Object} res response object
  * @returns success or error message to the client
  */
 const createProject = async (req, res) => {
-    res.send('Project Created!');
+
 };
 
 

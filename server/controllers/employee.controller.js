@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 const { logger } = require('../config/logger');
 const Employee = require("../models/employee.model");
+const { Project } = require('../models/project.model');
 const responseConstants = require('../utils/constants/responseConstants');
 const { hashString } = require('../utils/hashGenerator');
 const { sendError, sendSuccess } = require('../utils/responseBuilder');
@@ -112,7 +113,29 @@ const loginEmployee = async (req, res) => {
     return sendError(res, responseConstants.SUCCESS_CODE, 'Username or Password Incorrect!');
 };
 
+/**
+ * a method to get projects which are in the state *ongoing.
+ * @param {Object} req request object
+ * @param {Object} res response object
+ */
+const getAllOngoingProjects = async (req, res) => {
+    try {
+        const projects = await Project.find({state: 1});
+
+        //check if there are ongoing projects and send them.
+        if(projects) {
+            return sendSuccess(res, projects);
+        }
+
+    } catch(e) {
+        logger.error(`Unable to get all ongoing projects due to --- ${e.message}`);
+        return sendError(res, responseConstants.SERVER_ERROR_CODE, "Sorry, Something went wrong. Please try later!");
+    }
+    return sendSuccess(res, []);
+};
+
 module.exports = {
     loginEmployee,
-    registerEmployee
+    registerEmployee,
+    getAllOngoingProjects
 };

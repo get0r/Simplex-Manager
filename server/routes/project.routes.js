@@ -10,7 +10,7 @@ const projectRouter = express.Router();
  * @authUser- a route to authorize user(verify token).
  * @createProject- project creator endpoint.
  */
-projectRouter.get('/projects/new', authUser, isAdmin, createProject);
+projectRouter.get('/projects/create', authUser, createProject);
 
 
 module.exports = projectRouter;
