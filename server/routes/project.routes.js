@@ -1,7 +1,8 @@
 const express = require('express');
 
 const { createProject } = require("../controllers/project.controller");
-const { authUser, isAdmin } = require("../middlewares/auth/employee.auth");
+const { authUser } = require("../middlewares/auth/employee.auth");
+const { validateProjectData } = require('../middlewares/validator/project.validator');
 
 const projectRouter = express.Router();
 
@@ -10,7 +11,7 @@ const projectRouter = express.Router();
  * @authUser- a route to authorize user(verify token).
  * @createProject- project creator endpoint.
  */
-projectRouter.get('/projects/create', authUser, createProject);
+projectRouter.post('/projects/create', authUser, validateProjectData, createProject);
 
 
 module.exports = projectRouter;

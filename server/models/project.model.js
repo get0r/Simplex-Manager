@@ -20,13 +20,14 @@ const projectSchema = new mongoose.Schema({
 
    prority: {
        type: Number,
-       required: true,
+       default: -1,
    },
 
    clientId: {
        type: mongoose.SchemaTypes.ObjectId,
        required: true,
-       trim: true
+       trim: true,
+       ref: 'Client'
    },
 
    assignedTo: [String],
@@ -46,6 +47,7 @@ const projectSchema = new mongoose.Schema({
    detailId: {
        type: mongoose.SchemaTypes.ObjectId,
        required: true,
+       ref: 'ProjectDetail'
    },
 
    state: {
