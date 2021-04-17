@@ -24,9 +24,10 @@ const authUser = (req, res, next) => {
         let verifiedUser = jwt.verify(token, config.app.tokenSecret);
         //token is not valid
         if(!verifiedUser) return sendError(res, responseConstants.SUCCESS_CODE, 'Unauthorized access.');
-
-        req.userId = verifiedUser.id;       //_id stored in the token
-        req.userType = verifiedUser.userType;       //admin or employee 0 or 1 respectively.
+        req.user = {};
+        req.user.userId = verifiedUser.id;       //_id stored in the token
+        req.user.username = verifiedUser.username;
+        req.user.userType = verifiedUser.userType;       //admin or employee 0 or 1 respectively.
 
         //log auth success indicator
         logger.info(`Auth successful for ---${JSON.stringify({userId: verifiedUser.id, userType: verifiedUser.userType ? 'employee' : 'admin'})}`);
@@ -47,7 +48,7 @@ const authUser = (req, res, next) => {
  * @param {Function} next the next middleware function
  */
 const isAdmin = (req, res, next) => {
-    const userType = req.userType;
+    const userType = req.user.userType;
 
     if(userType == undefined || userType == null) return next(new AuthorizationError(path.basename(__filename), 'User type not found in req.userType'));
 

@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 const { logger } = require('../config/logger');
 const Employee = require("../models/employee.model");
-const { Project } = require('../models/project.model');
 const responseConstants = require('../utils/constants/responseConstants');
 const { hashString } = require('../utils/hashGenerator');
 const { sendError, sendSuccess } = require('../utils/responseBuilder');
@@ -51,7 +50,7 @@ const registerEmployee = async (req, res) => {
             });
             await newEmployee.save();  //writing to the databse
             //generate JWT token since registration is successful
-            let tokenPayload = { id: newEmployee._id, userType: isAdmin ? 0 : 1 };
+            let tokenPayload = { id: newEmployee._id,  username: newEmployee.username, userType: isAdmin ? 0 : 1 };
             const token = jwt.sign(tokenPayload, config.app.tokenSecret, { expiresIn: '48h' });
 
             //log registeration success data
@@ -93,7 +92,7 @@ const loginEmployee = async (req, res) => {
 
             if(!validPass) return sendError(res, responseConstants.SUCCESS_CODE, 'Incorrect Username or Password!');
             //create token since password was correct.
-            let tokenPayload = { id: employee._id, userType: employee.isAdmin ? 0 : 1 };
+            let tokenPayload = { id: employee._id, username: employee.username, userType: employee.isAdmin ? 0 : 1 };
             const token = jwt.sign(tokenPayload, config.app.tokenSecret, { expiresIn: '48h' });
 
             //remove password field to the user object to the client.

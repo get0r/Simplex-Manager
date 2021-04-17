@@ -1,8 +1,10 @@
+const mongoose = require('mongoose');
+
 const { logger } = require("../config/logger");
 const { Client } = require("../models/client.model")
 
 /**
- * a fake controller to register client to the database but
+ * a controller to register client to the database but
  * doesn't accept any req,res parameter
  *@returns the _id of the database record.
  */
@@ -24,6 +26,29 @@ const registerClient = async (clientDetail) => {
     return null;
 };
 
+/**
+ * a controller to check for client using id
+ * doesn't accept any req,res parameter
+ *@returns the true/false based on the existence of the client.
+ */
+ const clientExists = async (clientId) => {
+
+    try {
+        //check id eligibilty
+        if(!clientId || clientId.length != 24) return false;
+        //check if it exists
+        const client = await Client.findOne({ _id: mongoose.Types.ObjectId(clientId) });
+
+        if(client) return true;
+
+        return false;
+    } catch(e) {
+        logger.error(`Unable to check existence of clinet due to --- ${e.message}`);
+    }
+    return false;
+};
+
 module.exports = {
-    registerClient
+    registerClient,
+    clientExists
 };

@@ -18,9 +18,16 @@ projectRouter.post('/projects/create', authUser, validateProjectData, createProj
  * @route a route to remove specific project.
  * @authUser  a middleware to authorize user(verify token).
  * @isAdmin   a middlware to check if the authorized user is an admin.
- * @removeProject project creator endpoint.
+ * @removeProject project remover endpoint.
  */
-projectRouter.put('/projects/remove/:id', authUser, isAdmin, removeProject);
+projectRouter.put('/projects/remove/:id', authUser, removeProject);
+
+/**
+ * @route a route to update a specific attribute in a specific project.
+ * @authUser  a middleware to authorize user(verify token).
+ * @updateProjectDetail project updator endpoint.
+ */
+//projectRouter.put('/projects/updateDetail/:id', authUser, updateProjectDetail);
 
 
 module.exports = projectRouter;

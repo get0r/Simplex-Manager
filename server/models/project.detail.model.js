@@ -2,21 +2,31 @@ const mongoose = require("mongoose");
 
 
 const projectDetailSchema = mongoose.Schema({
-    clientBrief: String,
+    clientBrief: {
+        done: { type: Boolean, default: false },
+        detail: String,
+        who: { type: String, required: true},
+    },
 
-    deliverables: [String],
+    deliverables: {
+        done: { type: Boolean, default: false },
+        detail: [String],
+        who: { type: String, required: true},
+    },
 
     marketRes: {
         done: { type: Boolean, default: false },
         deadline: Date,
-        detail: String
+        detail: String,
+        who: { type: String, required: true},
     },
 
     moodBrd: {
         done: { type: Boolean, default: false },
         deadline: Date,
         detail: String,
-        filePath: String
+        filePath: String,
+        who: { type: String, required: true},
     },
 
     brainStorm: {
@@ -26,7 +36,8 @@ const projectDetailSchema = mongoose.Schema({
 
     conceptDevt: {
         done: { type: Boolean, default: false },
-        detail: String
+        detail: String,
+        who: { type: String, required: true},
     },
 
     visualExp: {
@@ -37,6 +48,7 @@ const projectDetailSchema = mongoose.Schema({
     conceptRef: {
         done: { type: Boolean, default: false },
         deadline: Date,
+        who: { type: String, required: true},
     },
 
     firstDraft: {
@@ -49,32 +61,41 @@ const projectDetailSchema = mongoose.Schema({
         done: { type: Boolean, default: false },
         deadline: Date,
         filePath: String,
+        who: { type: String, required: true},
     },
 
-    clientFdbk: String,
+    clientFdbk: {
+        done: { type: Boolean, default: false },
+        detail: String,
+        who: { type: String, required: true},
+    },
 
     revision: {
         done: { type: Boolean, default: false },
-        deadline: Date
+        deadline: Date,
+        who: { type: String, required: true},
     },
 
     clientApproval: {
         done: { type: Boolean, default: false },
-        deadline: Date
+        deadline: Date,
+        who: { type: String, required: true},
     },
 
     production: {
         done: { type: Boolean, default: false },
         deadline: Date,
         filePath: String,
-        detail: String
+        detail: String,
+        who: { type: String, required: true},
     },
 
     satisfaction: Number,
 
     onTime: {
         done: { type: Boolean, default: false },
-        detail: String
+        detail: String,
+        who: { type: String, required: true},
     }
 });
 
