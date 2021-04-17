@@ -1,7 +1,9 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
+const { projectSchema } = require("./project.model");
+const { projectDetailSchema } = require("./project.detail.model");
 
-const projectSchema = new mongoose.Schema({
+const deletedProjectSchema = new mongoose.Schema({
     name: {
         type: String,
         trim: true,
@@ -44,22 +46,19 @@ const projectSchema = new mongoose.Schema({
 
    requestDesc: String,
 
-   detailId: {
-       type: mongoose.SchemaTypes.ObjectId,
-       required: true,
-       ref: 'ProjectDetail'
-   },
+   detail: projectDetailSchema,
 
    state: {
        type: Number,
        default: 0,
    }
-
 });
 
-const Project = mongoose.model('Project', projectSchema);
+//since the attributes of the deleted and the undeleted projects are the same
+//projectSchema is assigned
+
+const DeletedProject = mongoose.model('deletedProject', deletedProjectSchema);
 
 module.exports = {
-    Project,
-    projectSchema
+    DeletedProject
 };

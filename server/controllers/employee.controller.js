@@ -59,7 +59,7 @@ const registerEmployee = async (req, res) => {
             //store the token in to the cookie
             res.cookie('token', token, { httpOnly: true, secure: config.app.secureCookie, sameSite: true});
             //strip the password and send the user object to client.
-            let employeeObject = newEmployee.toObject();
+            let employeeObject = await newEmployee.toObject();
             delete employeeObject.password;
             delete employeeObject.__v;
 
@@ -97,7 +97,7 @@ const loginEmployee = async (req, res) => {
             const token = jwt.sign(tokenPayload, config.app.tokenSecret, { expiresIn: '48h' });
 
             //remove password field to the user object to the client.
-            let employeeObject = employee.toObject();
+            let employeeObject = await employee.toObject();
             delete employeeObject.password;
             delete employeeObject.__v;
 
@@ -113,29 +113,8 @@ const loginEmployee = async (req, res) => {
     return sendError(res, responseConstants.SUCCESS_CODE, 'Username or Password Incorrect!');
 };
 
-/**
- * a method to get projects which are in the state *ongoing.
- * @param {Object} req request object
- * @param {Object} res response object
- */
-const getAllOngoingProjects = async (req, res) => {
-    try {
-        const projects = await Project.find({state: 1});
-
-        //check if there are ongoing projects and send them.
-        if(projects) {
-            return sendSuccess(res, projects);
-        }
-
-    } catch(e) {
-        logger.error(`Unable to get all ongoing projects due to --- ${e.message}`);
-        return sendError(res, responseConstants.SERVER_ERROR_CODE, "Sorry, Something went wrong. Please try later!");
-    }
-    return sendSuccess(res, []);
-};
 
 module.exports = {
     loginEmployee,
     registerEmployee,
-    getAllOngoingProjects
 };

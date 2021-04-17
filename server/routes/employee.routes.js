@@ -1,6 +1,7 @@
 const express = require('express');
 
-const { loginEmployee, registerEmployee,getAllOngoingProjects } = require('../controllers/employee.controller');
+const { loginEmployee, registerEmployee } = require('../controllers/employee.controller');
+const { getAllOngoingProjects } = require('../controllers/project.controller');
 const { authUser, isAdmin } = require('../middlewares/auth/employee.auth');
 const { validateLoginData, validateRegisterData } = require('../middlewares/validator/employee.validator');
 

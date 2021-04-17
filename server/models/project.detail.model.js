@@ -81,5 +81,6 @@ const projectDetailSchema = mongoose.Schema({
 const ProjectDetail = mongoose.model('ProjectDetail', projectDetailSchema);
 
 module.exports = {
-    ProjectDetail
+    ProjectDetail,
+    projectDetailSchema
 };
