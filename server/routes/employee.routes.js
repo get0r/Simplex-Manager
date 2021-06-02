@@ -1,7 +1,7 @@
 const express = require('express');
 
 const { loginEmployee, registerEmployee } = require('../controllers/employee.controller');
-const { getAllOngoingProjects } = require('../controllers/project.controller');
+const { getAllOngoingProjects, getEmployeeOngoingProjects } = require('../controllers/project.controller');
 const { authUser, isAdmin } = require('../middlewares/auth/employee.auth');
 const { validateLoginData, validateRegisterData } = require('../middlewares/validator/employee.validator');
 
@@ -37,5 +37,13 @@ employeeRouter.post('/admin/register', validateRegisterData, registerEmployee);
  * @registerEmployee register servive route end point.
  */
 employeeRouter.post('/employee/register', authUser, isAdmin, validateRegisterData, registerEmployee);
+
+/**
+ * @route a route to get list of all ongoing projects that are related to the current employee.
+ * @authUser user authentication middleware.
+ * @getEmployeeOngoingProjects a route end point to get all projects that are on ongoing state.
+ */
+employeeRouter.get('/employee/home', authUser, getEmployeeOngoingProjects);
+
 
 module.exports = employeeRouter;

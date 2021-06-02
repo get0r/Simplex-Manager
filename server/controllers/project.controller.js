@@ -7,6 +7,7 @@ const { DeletedProject } = require("../models/deleted.project.model");
 const responseConstants = require("../utils/constants/responseConstants");
 const { sendSuccess, sendError } = require("../utils/responseBuilder");
 const { registerClient, clientExists } = require("./client.controller");
+const { iterateAndChange } = require('../utils/helperFunctions');
 
 
 /**
@@ -51,7 +52,7 @@ const createProject = async (req, res) => {
             priority: projectInfo.priority || -1,
             clientId: clientId,
             assignedTo: projectInfo.assignedTo,
-            owner: projectInfo.owner,
+            owner: req.user.username,
             reportTo: projectInfo.reportTo,
             requestDesc: projectInfo.requestDesc,
             detailId: projectDetail._id,
@@ -86,6 +87,33 @@ const getAllOngoingProjects = async (req, res) => {
 
     } catch(e) {
         logger.error(`Unable to get all ongoing projects due to --- ${e.message}`);
+        return sendError(res, responseConstants.SERVER_ERROR_CODE, "Sorry, Something went wrong. Please try later!");
+    }
+    return sendSuccess(res, []);
+};
+
+
+/**
+ * a method to get projects which are in the state *ongoing and either the owner or
+ * the reportTo or the assignedTo field contains the current user.
+ * @param {Object} req request object
+ * @param {Object} res response object
+ */
+const getEmployeeOngoingProjects = async (req, res) => {
+    try {
+        const currentUser = req.user.username;
+        const projects = await Project.find().or([{"owner": currentUser},
+                                                {"reportTo": currentUser},
+                                                {"assignedTo": {"$in": [currentUser]}
+                                            }]).lean();
+
+        //check if there are ongoing projects and send them.
+        if(projects) {
+            return sendSuccess(res, projects);
+        }
+
+    } catch(e) {
+        logger.error(`Unable to get employee based ongoing projects due to --- ${e.message}`);
         return sendError(res, responseConstants.SERVER_ERROR_CODE, "Sorry, Something went wrong. Please try later!");
     }
     return sendSuccess(res, []);
@@ -153,24 +181,44 @@ const updateProjectDetail = async (req, res) => {
     const projectId = req.params.id;
     //check the existance of the project
     try {
-        const project = await Project({_id: mongoose.Types.ObjectId(projectId)});
+        const project = await Project.findById(mongoose.Types.ObjectId(projectId));
+
         if(project) {
             //exists so read detail and update
-            const projectDetail = await ProjectDetail({_id: project.detailId});
+            //const projectDetail = await ProjectDetail({_id: project.detailId});
             //check if he is admin or he is involved in the project
             // to allow editing of project
-            if(req.user.userType == 0) {
-                const attribute = req.body;
-                const detailObject = await projectDetail.toObject();
+            if(req.user.userType == 0 ||
+                req.user.username === project.owner ||
+                req.user.username === project.reportTo ||
+                project.assignedTo.includes(req.user.username)) {
+                    //get the fields to be edited change the who field to the current user
+                    // and merge the object with the existing one
+                    const newProjectDetail = req.body;
+                    iterateAndChange(newProjectDetail, {who: req.user.username});
+
+                    const projectDetail = await (await ProjectDetail.findById(project.detailId)).toObject();
+                    const updatedObject = {...projectDetail, ...newProjectDetail};
+
+                    //commit to databse
+                    const update = await ProjectDetail.updateOne({_id: project.detailId}, updatedObject);
+
+                    if(update.nModified === 1)
+                        return sendSuccess(res, "Updated Successfully!");
+                    return sendSuccess(res, "Nothing was changed!");
             }
+            return sendError(res, responseConstants.UNAUTHORIZED_CODE, `Unauthorized Access`);
         }
     } catch (e) {
-
+        logger.error(`Unable to update project with id --- ${id} --- due to --- ${e.message}`);
+        return sendError(res, responseConstants.SERVER_ERROR_CODE, `Sorry! Something went wrong, try again!`);
     }
 };
 
 module.exports = {
     createProject,
     getAllOngoingProjects,
-    removeProject
+    removeProject,
+    updateProjectDetail,
+    getEmployeeOngoingProjects
 };

@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { createProject, removeProject } = require("../controllers/project.controller");
+const { createProject, removeProject, updateProjectDetail } = require("../controllers/project.controller");
 const { authUser, isAdmin } = require("../middlewares/auth/employee.auth");
 const { validateProjectData } = require('../middlewares/validator/project.validator');
 
@@ -27,7 +27,7 @@ projectRouter.put('/projects/remove/:id', authUser, removeProject);
  * @authUser  a middleware to authorize user(verify token).
  * @updateProjectDetail project updator endpoint.
  */
-//projectRouter.put('/projects/updateDetail/:id', authUser, updateProjectDetail);
+projectRouter.post('/projects/updateDetail/:id', authUser, updateProjectDetail);
 
 
 module.exports = projectRouter;

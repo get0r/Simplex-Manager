@@ -5,20 +5,20 @@ const projectDetailSchema = mongoose.Schema({
     clientBrief: {
         done: { type: Boolean, default: false },
         detail: String,
-        who: { type: String, required: true},
+        who: { type: String, default:"@none", required: true},
     },
 
     deliverables: {
         done: { type: Boolean, default: false },
         detail: [String],
-        who: { type: String, required: true},
+        who: { type: String, default:"@none", required: true},
     },
 
     marketRes: {
         done: { type: Boolean, default: false },
         deadline: Date,
         detail: String,
-        who: { type: String, required: true},
+        who: { type: String, default:"@none", required: true},
     },
 
     moodBrd: {
@@ -26,7 +26,7 @@ const projectDetailSchema = mongoose.Schema({
         deadline: Date,
         detail: String,
         filePath: String,
-        who: { type: String, required: true},
+        who: { type: String, default:"@none", required: true},
     },
 
     brainStorm: {
@@ -37,7 +37,7 @@ const projectDetailSchema = mongoose.Schema({
     conceptDevt: {
         done: { type: Boolean, default: false },
         detail: String,
-        who: { type: String, required: true},
+        who: { type: String, default:"@none", required: true},
     },
 
     visualExp: {
@@ -48,7 +48,7 @@ const projectDetailSchema = mongoose.Schema({
     conceptRef: {
         done: { type: Boolean, default: false },
         deadline: Date,
-        who: { type: String, required: true},
+        who: { type: String, default:"@none", required: true},
     },
 
     firstDraft: {
@@ -61,25 +61,25 @@ const projectDetailSchema = mongoose.Schema({
         done: { type: Boolean, default: false },
         deadline: Date,
         filePath: String,
-        who: { type: String, required: true},
+        who: { type: String, default:"@none", required: true},
     },
 
     clientFdbk: {
         done: { type: Boolean, default: false },
         detail: String,
-        who: { type: String, required: true},
+        who: { type: String, default:"@none", required: true},
     },
 
     revision: {
         done: { type: Boolean, default: false },
         deadline: Date,
-        who: { type: String, required: true},
+        who: { type: String, default:"@none", required: true},
     },
 
     clientApproval: {
         done: { type: Boolean, default: false },
         deadline: Date,
-        who: { type: String, required: true},
+        who: { type: String, default:"@none", required: true},
     },
 
     production: {
@@ -87,7 +87,7 @@ const projectDetailSchema = mongoose.Schema({
         deadline: Date,
         filePath: String,
         detail: String,
-        who: { type: String, required: true},
+        who: { type: String, default:"@none", required: true},
     },
 
     satisfaction: Number,
@@ -95,7 +95,7 @@ const projectDetailSchema = mongoose.Schema({
     onTime: {
         done: { type: Boolean, default: false },
         detail: String,
-        who: { type: String, required: true},
+        who: { type: String, default:"@none", required: true},
     }
 });
 
